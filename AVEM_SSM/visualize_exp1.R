@@ -3,7 +3,6 @@ library(dplyr)
 library(tidyr)
 library(purrr)
 
-setwd("/Users/xig16121/Desktop/RL/RLDDM1/github/AVEM_SSM/")
 case1_out <- readRDS("results/case1_out.rds")
 case2_out <- readRDS("results/case2_out.rds")
 case3_out <- readRDS("results/case3_out.rds")

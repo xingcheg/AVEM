@@ -2,7 +2,6 @@ library(ggplot2)
 library(gridExtra)
 library(grid)
 
-setwd("/Users/xig16121/Desktop/RL/RLDDM1/github/AVEM_HMM/")
 source("main.R")
 
 # ------------------------------------------------------------

@@ -1,4 +1,3 @@
-setwd("/Users/xig16121/Desktop/RL/RLDDM1/github/AVEM_SSM/")
 source("avem_messm_simulation.R")
 source("avem_messm_mc.R")
 
