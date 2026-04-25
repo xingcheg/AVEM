@@ -122,7 +122,7 @@ print(one_gaussian$results)
 
 For Bernoulli/logistic mixed HMMs:
 
-```{r}
+```r
 setwd("AVEM_HMM")
 source("bernoulli_mhmm_compare_methods.R")
 
