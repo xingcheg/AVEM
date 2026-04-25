@@ -15,6 +15,8 @@ The code is organized as standalone R scripts rather than as an R package, so th
 |   |-- main.R
 |   |-- experiment1.R
 |   |-- experiment2.R
+|   |-- gaussian_mhmm_compare_methods.R
+|   |-- bernoulli_mhmm_compare_methods.R
 |   |-- accuracy_experiment.rds
 |   `-- speed_experiment.rds
 `-- AVEM_SSM/
@@ -38,11 +40,13 @@ The code is organized as standalone R scripts rather than as an R package, so th
 
 This folder contains code for Gaussian mixed hidden Markov models with a common latent Markov chain and subject-level random effects.
 
-- `main.R`: core implementation for simulation, fitting, label matching, evaluation, and experiment helpers.
+- `main.R`: core implementation for Gaussian MHMM simulation and mean-anchor AVEM fitting.
 - `experiment1.R`: accuracy study that varies sample size `n`, sequence length `T_len`, and random-effect variance `tau2`.
 - `experiment2.R`: speed study that varies the number of latent states `K` and observation dimension `d`.
-- `accuracy_experiment.rds`: saved output from the accuracy experiment.
-- `speed_experiment.rds`: saved output from the speed experiment.
+- `gaussian_mhmm_compare_methods.R`: comparison script for Gaussian MHMMs, including mean-anchor AVEM, Gaussian quadrature EM, and Monte Carlo EM.
+- `bernoulli_mhmm_compare_methods.R`: comparison script for Bernoulli/logistic MHMMs, including Laplace-AVEM, Gaussian quadrature EM, and Monte Carlo EM.
+- `accuracy_experiment.rds`: saved output from the Gaussian MHMM accuracy experiment.
+- `speed_experiment.rds`: saved output from the Gaussian MHMM speed experiment.
 
 ### `AVEM_SSM`
 
@@ -62,7 +66,7 @@ The scripts use base R plus a small set of plotting and data-manipulation packag
 Install the required packages with:
 
 ```r
-install.packages(c("ggplot2", "gridExtra", "dplyr", "tidyr", "purrr"))
+install.packages(c("ggplot2", "gridExtra", "dplyr", "tidyr", "purrr", "statmod"))
 ```
 
 ## Quick Start
@@ -90,6 +94,50 @@ To run the bundled studies:
 ```r
 source("experiment1.R")  # accuracy experiment
 source("experiment2.R")  # speed experiment
+```
+
+
+#### Comparing AVEM with QEM and MCEM
+
+For Gaussian mixed HMMs:
+
+```r
+setwd("AVEM_HMM")
+source("gaussian_mhmm_compare_methods.R")
+
+one_gaussian <- run_one_replication_compare(
+  K = 2,
+  n = 40,
+  T_len = 40,
+  d = 2,
+  tau2 = 1,
+  gh_nodes = c(3, 5),
+  mc_points = c(25, 50),
+  seed = 2026,
+  verbose = TRUE
+)
+
+print(one_gaussian$results)
+```
+
+For Bernoulli/logistic mixed HMMs:
+
+```{r}
+setwd("AVEM_HMM")
+source("bernoulli_mhmm_compare_methods.R")
+
+one_bernoulli <- run_one_replication_compare_bernoulli(
+  n = 40,
+  T_len = 100,
+  beta_true = c(-1.5, 1.5),
+  tau2 = 1,
+  gh_nodes = c(10, 20),
+  mc_points = c(10, 20),
+  seed = 2026,
+  verbose = TRUE
+)
+
+print(one_bernoulli$results)
 ```
 
 ### 2. SSM example
